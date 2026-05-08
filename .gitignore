@@ -1,0 +1,13 @@
+.DS_Store
+**/.DS_Store
+
+node_modules/
+**/node_modules/
+
+tmp/
+artifacts/
+artifacts/**/build/node_modules/
+artifacts/ppt-tools/node_modules/
+
+plugins/siebel-open-ui/scripts/siebel_open_ui.config.json
+*.log

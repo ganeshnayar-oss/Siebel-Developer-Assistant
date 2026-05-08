@@ -1,0 +1,40 @@
+{
+  "name": "siebel-open-ui",
+  "version": "0.2.0",
+  "description": "Prompt-first Codex plugin for Siebel workspace, business component, applet, business service, workflow, and Open UI view automation.",
+  "author": {
+    "name": "Local Workspace",
+    "email": "",
+    "url": ""
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "siebel",
+    "open-ui",
+    "workspace",
+    "applet",
+    "oracle"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Siebel Open UI",
+    "shortDescription": "Use natural prompts to create Siebel business components, applets, business services, workflows, and views.",
+    "longDescription": "Automates common Siebel configuration steps from Codex using prompt-based requests. Configure only the Siebel Web Tools connection details, then ask for a business component, applet, business service, workflow, or view in chat, such as creating an opportunity list applet with specific fields, creating a shell business component on a base table, creating a business service, or adding a custom view under Opportunities. The plugin exposes MCP tools for setup, connection validation, prompt planning, workspace validation, business component creation, applet creation, business service creation, workflow creation, and Open UI view placement against the live Siebel Web Tools API.",
+    "developerName": "Local Workspace",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write",
+      "Automation"
+    ],
+    "defaultPrompt": [
+      "Create an opportunity list applet with Name and Revenue.",
+      "Create a contact capture business component for contacts.",
+      "Create a business service called Prospect Sync Service.",
+      "Show the Siebel setup and test the connection."
+    ],
+    "brandColor": "#0F766E",
+    "screenshots": []
+  }
+}

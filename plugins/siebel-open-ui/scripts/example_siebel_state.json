@@ -1,0 +1,55 @@
+{
+  "workspaces": [
+    {
+      "workspace_name": "WS_DEMO_001",
+      "branch_name": "main",
+      "reason": "demo",
+      "status": "created"
+    },
+    {
+      "workspace_name": "WS_opportunity_20260423_124306",
+      "branch_name": "dev_branch",
+      "reason": "Prompt request: create an opportunity list applet that includes Name, Revenue, and Sales Stage",
+      "status": "created"
+    }
+  ],
+  "applets": [
+    {
+      "workspace_name": "WS_opportunity_20260423_124306",
+      "applet_name": "Opportunity List Applet",
+      "business_component": "Opportunity",
+      "applet_type": "list",
+      "fields": [
+        "Name",
+        "Revenue",
+        "Sales Stage"
+      ],
+      "project": "Opportunity",
+      "template_name": "Base List Applet",
+      "class_name": "CSSFrameListWebApplet",
+      "web_template": "CCAppletList",
+      "status": "created"
+    }
+  ],
+  "placements": [
+    {
+      "workspace_name": "WS_opportunity_20260423_124306",
+      "view_name": "Opportunity View",
+      "applet_name": "Opportunity List Applet",
+      "mode": "Base",
+      "tab_name": "",
+      "sequence": "",
+      "status": "placed"
+    }
+  ],
+  "connections": [
+    {
+      "oracle_guid": "your-oracle-guid",
+      "webtools_url": "https://host:port/siebel/v1.0/workspace/dev_branch",
+      "workspace_branch": "dev_branch",
+      "username": "your-username",
+      "session_id": "",
+      "status": "verified"
+    }
+  ]
+}

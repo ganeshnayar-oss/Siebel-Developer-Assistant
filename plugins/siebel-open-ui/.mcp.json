@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "siebel-open-ui": {
+      "command": "python3",
+      "args": [
+        "./scripts/siebel_open_ui_mcp.py"
+      ],
+      "cwd": "."
+    }
+  }
+}

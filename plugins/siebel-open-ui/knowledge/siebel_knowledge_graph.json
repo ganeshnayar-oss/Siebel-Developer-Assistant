@@ -1,0 +1,344 @@
+{
+  "version": "2026-04-28",
+  "description": "Local working knowledge graph for the Siebel Open UI plugin. Use this before probing live Siebel when the question is about previously learned repository structure, environment quirks, or safe mutation patterns.",
+  "entities": [
+    {
+      "id": "view.order_entry_line_items_sales",
+      "type": "view",
+      "name": "Order Entry - Line Items View (Sales)",
+      "attributes": {
+        "business_object": "Order Entry (Sales)",
+        "rendered_applet": "Order Entry - Order Form Applet Dashboard (Sales)",
+        "shared_applet": true,
+        "protected_target": true
+      }
+    },
+    {
+      "id": "view.order_entry_line_items_detail_sales",
+      "type": "view",
+      "name": "Order Entry - Line Items Detail View (Sales)",
+      "attributes": {
+        "business_object": "Order Entry (Sales)",
+        "rendered_applet": "Order Entry - Order Form Applet Dashboard (Sales)",
+        "shared_applet": true,
+        "protected_target": true
+      }
+    },
+    {
+      "id": "applet.order_form_dashboard_sales",
+      "type": "applet",
+      "name": "Order Entry - Order Form Applet Dashboard (Sales)",
+      "attributes": {
+        "class_name": "CSSSWEFrameOrder",
+        "business_component": "Order Entry - Orders",
+        "shared_across_views": true,
+        "safe_mutation_rule": "Minimal child-row changes only; keep applet header aligned with MAIN."
+      }
+    },
+    {
+      "id": "applet.order_form_sales",
+      "type": "applet",
+      "name": "Order Entry - Order Form Applet (Sales)",
+      "attributes": {
+        "business_component": "Order Entry - Orders",
+        "not_current_render_target_for_shared_line_item_views": true
+      }
+    },
+    {
+      "id": "service.order_presubmit_validation",
+      "type": "business_service",
+      "name": "Order PreSubmit Validation Service",
+      "attributes": {
+        "method": "ValidateOrder",
+        "project": "00Phoenix",
+        "success_popup_expected": true
+      }
+    },
+    {
+      "id": "service.order_duplicate_subscription_validation",
+      "type": "business_service",
+      "name": "Order Duplicate Subscription Validation Service",
+      "attributes": {
+        "method": "ValidateDuplicateSubscriptions",
+        "project": "00Phoenix",
+        "success_popup_expected": true
+      }
+    },
+    {
+      "id": "constraint.control_locale_rest",
+      "type": "environment_constraint",
+      "name": "Repository Control Locale cannot be created through current REST API",
+      "attributes": {
+        "error_code": "SBL-EAI-04421",
+        "symptom": "Cannot perform 'NewRecord' on the business component 'Repository Control Locale'",
+        "impact": "Custom toolbar controls can exist in metadata but remain invisible because locale rows for visible labels cannot be created by REST."
+      }
+    },
+    {
+      "id": "constraint.applet_user_prop_rest",
+      "type": "environment_constraint",
+      "name": "Applet User Prop REST path is inconsistent",
+      "attributes": {
+        "symptom": "PUT or GET may return 404/500 even when writes partially apply.",
+        "impact": "Do not treat direct Applet User Prop readback as authoritative in this environment."
+      }
+    },
+    {
+      "id": "constraint.shared_dashboard_header",
+      "type": "safety_rule",
+      "name": "Do not rewrite shared dashboard applet header broadly",
+      "attributes": {
+        "reason": "Prior broad customization caused Inspect/runtime failures on Sales Order views.",
+        "verification_rule": "Compare shared applet header against MAIN before and after mutation."
+      }
+    },
+    {
+      "id": "application.siebel_universal_agent",
+      "type": "application",
+      "name": "Siebel Universal Agent",
+      "attributes": {
+        "url_alias": "ecommunications",
+        "menu_registration_child": "Screen Menu Item",
+        "secondary_navigation_child": "Page Tab",
+        "notes": "Top-level ecommunications navigation cannot be treated as solved from repository metadata alone. Screen Menu Item and Page Tab registration can both exist while the runtime menu still omits the screen."
+      }
+    },
+    {
+      "id": "screen.web_call_center_home",
+      "type": "screen",
+      "name": "Web Call Center Home Screen",
+      "attributes": {
+        "default_view": "Home Page View (WCC)",
+        "project": "Siebel Universal Agent",
+        "menu_label": "Home"
+      }
+    },
+    {
+      "id": "view.home_page_wcc",
+      "type": "view",
+      "name": "Home Page View (WCC)",
+      "attributes": {
+        "business_object": "WebCallCenter Home",
+        "default_screen": "Web Call Center Home Screen",
+        "use_case": "aggregate home page source pattern for WCC-style dashboard layouts"
+      }
+    },
+    {
+      "id": "screen.c360",
+      "type": "screen",
+      "name": "C360 Screen",
+      "attributes": {
+        "default_view": "C360",
+        "project": "00Phoenix",
+        "created_in_workspace": "dev_sadmin_ganesh_aidevtools",
+        "screen_menu_sequence": "153",
+        "page_tab_sequence": "12",
+        "runtime_menu_visible": false,
+        "runtime_direct_view_status": "blocked_by_responsibility"
+      }
+    },
+    {
+      "id": "view.c360",
+      "type": "view",
+      "name": "C360",
+      "attributes": {
+        "business_object": "WebCallCenter Home",
+        "source_pattern": "Home Page View (WCC)",
+        "project": "00Phoenix",
+        "menu_screen": "C360 Screen",
+        "runtime_direct_gotoview_result": "SBL-DAT-00329",
+        "runtime_direct_gotoview_meaning": "The active runtime responsibility does not allow access to the view.",
+        "runtime_direct_gotoview_error_text": "The responsibility of user 'SADMIN' does not allow accessing view 'C360'."
+      }
+    },
+    {
+      "id": "constraint.responsibility_rest_gap",
+      "type": "environment_constraint",
+      "name": "Responsibility metadata paths are not reliably automatable in this environment",
+      "attributes": {
+        "symptom": "Responsibility-oriented REST paths such as Responsibility, Responsibility View, and View Responsibility returned HTTP 500 earlier and later became DNS-unreachable from the terminal while browser sessions remained active.",
+        "impact": "Repository creation of a new ecommunications view cannot be treated as runtime-access complete. Responsibility assignment may require manual runtime admin work or a browser path that is not currently scriptable."
+      }
+    },
+    {
+      "id": "constraint.runtime_responsibility_gap",
+      "type": "environment_constraint",
+      "name": "Runtime can reject a new ecommunications view even when repository registration succeeded",
+      "attributes": {
+        "symptom": "Direct runtime navigation to C360 produced SBL-DAT-00329 for user SADMIN.",
+        "impact": "Future runs must verify responsibility access separately from Screen Menu Item, Page Tab, and Screen View registration."
+      }
+    },
+    {
+      "id": "constraint.navigation_locale_rest",
+      "type": "environment_constraint",
+      "name": "Navigation locale REST paths are documented but unstable",
+      "attributes": {
+        "symptom": "Screen Menu Item Locale, Page Tab Locale, and Screen View Locale all expose describe contracts, but collection GET returns 404 and creation attempts can return HTTP 500.",
+        "impact": "Do not assume navigation-label child rows can be created reliably through REST in this environment."
+      }
+    },
+    {
+      "id": "constraint.runtime_navigation_gap",
+      "type": "environment_constraint",
+      "name": "Repository registration can succeed while ecommunications runtime menu still omits the screen",
+      "attributes": {
+        "symptom": "C360 Screen exists with Screen Menu Item and Page Tab rows, yet the live menu still shows only the established twelve entries.",
+        "impact": "Live Inspect verification is mandatory before claiming menu success."
+      }
+    },
+    {
+      "id": "capability.business_component_creation",
+      "type": "plugin_capability",
+      "name": "Shell business component creation",
+      "attributes": {
+        "supported_via_plugin": true,
+        "scope": "Creates the Business Component row with project, inferred class, table, and no-insert/no-update/no-delete flags.",
+        "business_user_prompt_style": "Ask for the business entity or record type, not the Siebel class name.",
+        "follow_on_work_required": "Fields, joins, links, applets, and view placement remain separate steps."
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "view.order_entry_line_items_sales",
+      "target": "applet.order_form_dashboard_sales",
+      "type": "renders"
+    },
+    {
+      "source": "view.order_entry_line_items_detail_sales",
+      "target": "applet.order_form_dashboard_sales",
+      "type": "renders"
+    },
+    {
+      "source": "applet.order_form_dashboard_sales",
+      "target": "constraint.control_locale_rest",
+      "type": "blocked_by"
+    },
+    {
+      "source": "applet.order_form_dashboard_sales",
+      "target": "constraint.applet_user_prop_rest",
+      "type": "affected_by"
+    },
+    {
+      "source": "applet.order_form_dashboard_sales",
+      "target": "constraint.shared_dashboard_header",
+      "type": "guarded_by"
+    },
+    {
+      "source": "service.order_presubmit_validation",
+      "target": "applet.order_form_dashboard_sales",
+      "type": "intended_invocation_target"
+    },
+    {
+      "source": "service.order_duplicate_subscription_validation",
+      "target": "applet.order_form_dashboard_sales",
+      "type": "intended_invocation_target"
+    },
+    {
+      "source": "application.siebel_universal_agent",
+      "target": "screen.web_call_center_home",
+      "type": "menu_contains"
+    },
+    {
+      "source": "screen.web_call_center_home",
+      "target": "view.home_page_wcc",
+      "type": "defaults_to"
+    },
+    {
+      "source": "screen.c360",
+      "target": "view.c360",
+      "type": "defaults_to"
+    },
+    {
+      "source": "view.c360",
+      "target": "constraint.runtime_responsibility_gap",
+      "type": "blocked_by"
+    },
+    {
+      "source": "view.c360",
+      "target": "constraint.responsibility_rest_gap",
+      "type": "affected_by"
+    },
+    {
+      "source": "view.c360",
+      "target": "view.home_page_wcc",
+      "type": "cloned_from"
+    },
+    {
+      "source": "application.siebel_universal_agent",
+      "target": "constraint.navigation_locale_rest",
+      "type": "affected_by"
+    },
+    {
+      "source": "application.siebel_universal_agent",
+      "target": "constraint.runtime_navigation_gap",
+      "type": "affected_by"
+    },
+    {
+      "source": "capability.business_component_creation",
+      "target": "application.siebel_universal_agent",
+      "type": "available_in_plugin_for"
+    }
+  ],
+  "playbooks": [
+    {
+      "name": "Create a business component shell safely",
+      "steps": [
+        "Prefer planning first so the name, project, class, and base table are explicit before execution.",
+        "Start from the user's business language such as contacts, accounts, opportunities, or orders.",
+        "Infer the class from live repository patterns when possible instead of asking the user for it.",
+        "If the user does not specify a table, create only a shell business component and state that the base table is still unset.",
+        "Reuse a known project when possible, otherwise default to 00Phoenix.",
+        "Treat repository fields, joins, links, and downstream applets as separate follow-on tasks."
+      ]
+    },
+    {
+      "name": "Modify shared Sales Order dashboard applet safely",
+      "steps": [
+        "Validate which applet the target view actually renders in the chosen workspace.",
+        "If the applet is 'Order Entry - Order Form Applet Dashboard (Sales)' on the shared line-item views, treat it as protected.",
+        "Compare the shared applet header against MAIN before making changes.",
+        "Prefer minimal child-row changes instead of rewriting the applet header.",
+        "Do not rely on Applet User Prop readback as authoritative in this environment.",
+        "Assume custom toolbar button visibility may require Control Locale rows that REST cannot create here.",
+        "Revalidate the shared applet header against MAIN after mutation."
+      ]
+    },
+    {
+      "name": "Add a top-level menu entry in Siebel Universal Agent",
+      "steps": [
+        "Identify the application as 'Siebel Universal Agent' when the runtime URL uses the 'ecommunications' alias.",
+        "Create or update the target view first.",
+        "Create the target screen without Default View first if the target view is not yet registered under that screen.",
+        "Create the Screen View row for the target view under the target screen.",
+        "Update the screen and set Default View only after the Screen View exists.",
+        "Register the screen under Application/Siebel Universal Agent/Screen Menu Item.",
+        "Register the screen under Application/Siebel Universal Agent/Page Tab as well when the runtime uses first-level tab navigation.",
+        "Do not assign the new Screen Menu Item to the global max sequence by default; place it near the visible menu band and verify the live menu.",
+        "Do not assume generic Application child paths work; in this environment, some Application child types still return HTTP 500.",
+        "Do not report success until the live application menu is verified in Inspect or browser runtime."
+      ]
+    },
+    {
+      "name": "Validate ecommunications navigation registration",
+      "steps": [
+        "Read back the Screen, Screen View, Screen Menu Item, and Page Tab rows.",
+        "Confirm the direct GotoView URL resolves the target view in the application.",
+        "Open a fresh live runtime session and inspect whether the screen actually appears in the first-level menu.",
+        "If the direct URL works but the menu entry is still absent, record the result as an unresolved runtime-navigation gap instead of a successful fix.",
+        "Treat Screen Menu Item Locale, Page Tab Locale, and Screen View Locale as experimental in this environment because describe contracts exist but writes may still fail."
+      ]
+    },
+    {
+      "name": "Validate new ecommunications view access",
+      "steps": [
+        "After repository registration, open the view in live runtime or Inspect instead of assuming the access layer is inherited automatically.",
+        "If runtime returns SBL-DAT-00329, classify the failure as responsibility access and stop treating menu registration as the main blocker.",
+        "Do not loop on Screen Menu Item, Page Tab, or locale mutations once SBL-DAT-00329 is confirmed.",
+        "Attempt responsibility or access assignment through the supported admin path for the environment.",
+        "If responsibility metadata APIs are unavailable, preserve the exact runtime error and environment limitation in the knowledge graph for future runs."
+      ]
+    }
+  ]
+}

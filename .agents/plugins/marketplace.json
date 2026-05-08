@@ -1,0 +1,20 @@
+{
+  "name": "local-workspace",
+  "interface": {
+    "displayName": "Local Workspace Plugins"
+  },
+  "plugins": [
+    {
+      "name": "siebel-open-ui",
+      "source": {
+        "source": "local",
+        "path": "./plugins/siebel-open-ui"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
